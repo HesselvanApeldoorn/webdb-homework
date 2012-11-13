@@ -8,6 +8,7 @@
       b: Magnetic field</br>
       c: Sonar</br>
       d: GPS</br>
+      e: Another wrong answer</br>
     
     <form action="<?php echo "${_SERVER['PHP_SELF']}";?>" method="post">
       Answer: <input type="text" name="name"/> <br>
@@ -25,6 +26,8 @@
 	  echo "Ducks are not bats";
 	} else if("${_REQUEST['name']}"=="d") {
 	  echo "Ducks don't have GPS!";
+	} else if("${_REQUEST['name']}"=="e") {
+	  echo "Hint: the answer is not 'e'";
 	} else {
 	  echo "Only enter the correct letter please.";
 	}
