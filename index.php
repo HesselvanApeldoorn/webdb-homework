@@ -1,37 +1,48 @@
 <html>
   <body>
     <?php
-      if (!isset($_REQUEST['submit'])){
-    ?>
-      How does a duck know what direction south is? </br>
-      a: He doesn't</br>
-      b: Magnetic field</br>
-      c: Sonar</br>
-      d: GPS</br>
-      e: Another wrong answer</br>
-    
+      $questions = array( 
+	array("How does a duck know what direction south is?", 2, "He doesn't", "Magnetic field", "Sonar", "GPS"),
+	array("How does he tell his wife from all the other ducks?", 1, "wedding ring", "He doesn't", "Feathers", "GPS"),
+      );
+if ($_REQUEST['questionNo']==0) {
+  $i=0;
+} else {
+  $i=($_REQUEST['questionNo']);
+}
+if ($i>=count($questions)) {
+  echo "You've reached the end of this quiz. Thank you for your participation.";
+} elseif (!isset($_REQUEST['submit'])){
+    echo $questions[$i][0]."</br>";
+    for($j=2; $j<count($questions[$i]);$j++) {
+      echo ($j-1)." ".$questions[$i][$j]."</br>";
+    }
+     
+    ?> 
     <form action="<?php echo "${_SERVER['PHP_SELF']}";?>" method="post">
-      Answer: <input type="text" name="name"/> <br>
+      Answer: <input type="text" name="ans"/>
       <input type = "submit" name = "submit" value = "submit">
+      <input type = "hidden" name = "questionNo" value ="<?php echo "$i"; ?>">
+
     </form>
   
    
     <?php
-      } else {
-	if("${_REQUEST['name']}"=="a") {
-	  echo "They do know what direction south is actually";
-	} else if("${_REQUEST['name']}"=="b") {
-          echo "Yep, magnetic field.";?> <a href="http://www.youtube.com/watch?v=IZdyXjPjbHQ"> And how does he tell his wife from all the other ducks? </a> <?php
-        } else if("${_REQUEST['name']}"=="c") {
-	  echo "Ducks are not bats";
-	} else if("${_REQUEST['name']}"=="d") {
-	  echo "Ducks don't have GPS!";
-	} else if("${_REQUEST['name']}"=="e") {
-	  echo "Hint: the answer is not 'e'";
+} else {
+	
+	if ($_POST['ans']==$questions[$i][1]) {
+	  echo "Good job! That's the correct answer";
 	} else {
-	  echo "Only enter the correct letter please.";
+	  echo "No, your answer is wrong.";
 	}
-      }
-    ?>
+	$i++;
+	?>
+	<form>
+	<input type = "submit" name = "Next" value = "Next">
+	<input type = "hidden" name = "questionNo" value ="<?php echo "$i"; ?>">
+	</form>
+	<?php
+}
+?>
   </body>
 </html>
