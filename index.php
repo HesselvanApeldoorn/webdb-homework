@@ -31,10 +31,8 @@
                     echo mysql_result($question,0)."</br>
                     <form method='post'>";
                         $answers = mysql_query("select * from choice where quest_number=($i+1)");
-                        $j=1;
                         while($answer = mysql_fetch_array($answers)) {
-                            echo "<input type = 'radio' name = 'ans' value = '".($j)."'> ".$answer['c_text']."<br>";
-                            $j++;
+                            echo "<input type = 'radio' name = 'ans' value = '".$answer['c_number']."'> ".$answer['c_text']."<br>";
                         }
                         echo " <input type = 'submit' name = 'submit' value = 'submit'>
                         <input type = 'hidden' name = 'questionNo' value ='".$i."'>
