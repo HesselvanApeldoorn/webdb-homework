@@ -1,13 +1,19 @@
 <html>
     <head>
             <?php require_once('../../dbConfig.php'); ?>
+            <?php require_once('../../MDB2.php'); ?>
     </head>
     <body>
         <?php
+	$dsn="mysql://$username:$password@$host/$db";
+	$mdb2=MDB2::connect($dsn);
+	if (PEAR::isError($mdb2))
+	{
+	    die($mdb2->getMessage().'  ,  '. $mdb2->getDebugInfo());
+	} else {
             if(!isset($_COOKIE["cookie"])) {
                 setcookie("cookie[score]", 0);
                 setcookie("cookie[question]", 0);
-                echo "crap<br>";
             }
             if ($_POST['questionNo']==0) {
                 $i=0;
@@ -54,6 +60,7 @@
                     </form>";
                 }
             }
+        }
         ?>
     </body>
 </html>
