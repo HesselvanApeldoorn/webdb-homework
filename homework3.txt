@@ -1,0 +1,3 @@
+Pressing "inspect element" and then changing the hidden value of questionNumber would be a way to skip a question. I however kept track of the question numer with both an cookie and a hidden variable. If these two didnt match (e.g. you skipped or retried a question), you would be considered a cheater and you will have to redo the entire test.
+
+The same method of cheating is not possible with session management since you can simply not change these session variables.
