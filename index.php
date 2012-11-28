@@ -1,16 +1,21 @@
 <html>
     <head>
-            <?php require_once('../../dbConfig.php'); ?>
-            <?php require_once('../../MDB2.php'); ?>
+            <?php require_once('../../dbConfig.php'); 
+                error_reporting(-1);
+                ini_set("display_errors", 1);
+            ?>
     </head>
     <body>
         <?php
 	$dsn="mysql://$username:$password@$host/$db";
-	$mdb2=MDB2::connect($dsn);
-	if (PEAR::isError($mdb2))
-	{
-	    die($mdb2->getMessage().'  ,  '. $mdb2->getDebugInfo());
-	} else {
+	$mdb2=mysql_connect($host, $username, $password);
+           mysql_select_db($db);
+        
+// 	if (DB::isError($mdb2))
+// 	{
+// 	    die($mdb2->getMessage().'  ,  '. $mdb2->getDebugInfo());
+// 	} else {
+// 	    echo $mdb2;
             if(!isset($_COOKIE["cookie"])) {
                 setcookie("cookie[score]", 0);
                 setcookie("cookie[question]", 0);
@@ -27,6 +32,7 @@
                 echo "<a href=''>Retry</a>";
             } else {
                 $numberQuestions = mysql_result(mysql_query("select count(*) from question"),0);
+                //die($mdb2->getMessage().'  ,  '. $mdb2->getDebugInfo());
                 if ($i>=$numberQuestions) {
                     echo "You've reached the end of this quiz. Thank you for your participation.<br>";
                     echo "Your score: ".$_COOKIE["cookie"]["score"]." out of ".$numberQuestions; 
@@ -60,7 +66,7 @@
                     </form>";
                 }
             }
-        }
+//         }
         ?>
     </body>
 </html>
