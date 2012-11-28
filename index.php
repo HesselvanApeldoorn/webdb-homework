@@ -17,15 +17,21 @@
 // 	    die($mdb2->getMessage().'  ,  '. $mdb2->getDebugInfo());
 // 	} else {
 // 	    echo $mdb2;
+            if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 10)) {
+                session_unset();
+                session_destroy();
+            }
             if(!isset($_SESSION["score"]) | !isset($_SESSION["question"])) {
                 $_SESSION["score"] = 0;
                 $_SESSION["question"]= 0;
             }
+            $_SESSION['LAST_ACTIVITY'] = time();
             $numberQuestions = mysql_result(mysql_query("select count(*) from question"),0);
             //die($mdb2->getMessage().'  ,  '. $mdb2->getDebugInfo());
             if ($_SESSION["question"]>=$numberQuestions) {
                 echo "You've reached the end of this quiz. Thank you for your participation.<br>";
                 echo "Your score: ".$_SESSION["score"]." out of ".$numberQuestions; 
+                echo "</br><a href=''>Retry</a>";
                 session_destroy();
             } elseif (!isset($_REQUEST['submit'])) {
                 $question = mysql_query("select q_text from question where q_number=".($_SESSION['question']+1));
