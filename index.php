@@ -1,7 +1,16 @@
+<?php 
+require_once('../../dbConfig.php'); 
+try
+{
+    $con = new PDO("mysql:dbname=$db;host=$host", $username, $password);
+} catch(PDOException $e) {
+    echo $e->getMessage();
+}
+?>
+
 <html>
     <head>
         <?php 
-            require_once('../../dbConfig.php'); 
             //error_reporting(-1);
             //ini_set("display_errors", 1);
             session_start();
@@ -9,12 +18,6 @@
     </head>
     <body>
         <?php
-        try
-        {
-            $con = new PDO("mysql:dbname=$db;host=$host", $username, $password);
-        } catch(PDOException $e) {
-            echo $e->getMessage();
-        }
         if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 604800)) {
             session_unset();
             session_destroy();
