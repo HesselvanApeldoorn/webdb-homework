@@ -30,9 +30,11 @@ $_SESSION['LAST_ACTIVITY'] = time();
     </head>
     <body>
         <?php
+        $given_username = $_SESSION["user"];
         echo "<form action='logout.php'>
             <input type='submit' name='logout' value='logout'>
         </form>
+        <h3>user: $given_username </h3>
         <br><hr>";
 
         $query = $con->prepare('select count(*) from question');
@@ -41,7 +43,15 @@ $_SESSION['LAST_ACTIVITY'] = time();
         if ($_SESSION["question"]>=$numberQuestions) {
             echo "You've reached the end of this quiz. Thank you for your participation.<br>";
             echo "Your score: ".$_SESSION["score"]." out of ".$numberQuestions; 
-            echo "</br><a href=''>Retry</a>";
+            echo "</br><a href='home.php'>to Home</a>";
+            $user = $_SESSION['user'];
+            $query = $con->prepare("Select count(*) from high_score where user_name='$user'");
+            $query->execute();
+            $numberAttempts = $query->fetchColumn()+1;
+            $score = $_SESSION['score'];
+            $sql = "insert into high_score values($score, '$user', $numberAttempts, NOW())";
+            $query = $con->prepare($sql);
+            $query->execute();
             $_SESSION["score"] = 0;
             $_SESSION["question"]= 0;
         } elseif (!isset($_REQUEST['submit'])) {

@@ -1,7 +1,7 @@
 <?php             
     session_start();
     if  (isset($_SESSION["user"])) {
-        header("location:index.php");
+        header("location:home.php");
     }
 ?>
 <html>
@@ -24,7 +24,7 @@
         <?php 
          if (isset($_REQUEST['login'])) {
                 $username_given = $_REQUEST['username_given'];
-                $password_given = $_REQUEST['password_given'];
+                $password_given = hash('sha512', $_REQUEST['password_given']);
                 $account = "SELECT COUNT(*) FROM user WHERE user_name='$username_given' AND password='$password_given'";
                 $query = $con->prepare($account);
                 $query->execute();
@@ -33,7 +33,7 @@
                     echo "incorrect account credentials.<br> <a href='login.php'>Retry</a>";
                 } else {
                     $_SESSION["user"]=$username_given;
-                    header("Location: index.php");
+                    header("Location: home.php");
                 }
         } else {
             echo '

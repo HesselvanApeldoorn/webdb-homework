@@ -1,6 +1,3 @@
-<?php             
-    session_start();
-?>
 <html>
     <head>
         <?php 
@@ -19,7 +16,7 @@
         <?php 
          if (isset($_REQUEST['submit'])) {
                 $username_given = $_REQUEST['username_given'];
-                $password_given = $_REQUEST['password_given'];
+                $password_given = hash('sha512', $_REQUEST['password_given']);
                 $account = "INSERT INTO user VALUES('$username_given', '$password_given')";
                 $query = $con->prepare($account);
                 $query->execute();
