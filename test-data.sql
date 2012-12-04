@@ -16,3 +16,6 @@ INSERT INTO choice(c_number, quest_number, c_text, correct) VALUES (1, 3, "Glue"
 INSERT INTO choice(c_number, quest_number, c_text, correct) VALUES (2, 3, "Pressure", 0);
 INSERT INTO choice(c_number, quest_number, c_text, correct) VALUES (3, 3, "I don't know", 1);
 INSERT INTO choice(c_number, quest_number, c_text, correct) VALUES (4, 3, "Incorrect answer here <==", 0);
+
+INSERT INTO  user VALUES('henk','henk');
+INSERT INTO user VALUES('jan', 'jejo');

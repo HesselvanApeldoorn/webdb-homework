@@ -1,11 +1,17 @@
 <?php 
-require_once('../../dbConfig.php'); 
-try
-{
-    $con = new PDO("mysql:dbname=$db;host=$host", $username, $password);
-} catch(PDOException $e) {
-    echo $e->getMessage();
+    session_start();
+    if  (!isset($_SESSION["user"])) {
+        header("location:login.php");
+    }
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 604800)) {
+    session_unset();
+    session_destroy();
 }
+if(!isset($_SESSION["score"]) | !isset($_SESSION["question"])) {
+    $_SESSION["score"] = 0;
+    $_SESSION["question"]= 0;
+}
+$_SESSION['LAST_ACTIVITY'] = time();
 ?>
 
 <html>
@@ -13,21 +19,22 @@ try
         <?php 
             //error_reporting(-1);
             //ini_set("display_errors", 1);
-            session_start();
+            require_once('../../dbConfig.php'); 
+            try
+            {
+                $con = new PDO("mysql:dbname=$db;host=$host", $username, $password);
+            } catch(PDOException $e) {
+                echo $e->getMessage();
+            }
         ?>
     </head>
     <body>
         <?php
-        if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 604800)) {
-            session_unset();
-            session_destroy();
-        }
-        if(!isset($_SESSION["score"]) | !isset($_SESSION["question"])) {
-            $_SESSION["score"] = 0;
-            $_SESSION["question"]= 0;
-        }
-        $_SESSION['LAST_ACTIVITY'] = time();
-        $query =0;
+        echo "<form action='logout.php'>
+            <input type='submit' name='logout' value='logout'>
+        </form>
+        <br><hr>";
+
         $query = $con->prepare('select count(*) from question');
         $query->execute();
         $numberQuestions = $query->fetchColumn();
@@ -35,7 +42,8 @@ try
             echo "You've reached the end of this quiz. Thank you for your participation.<br>";
             echo "Your score: ".$_SESSION["score"]." out of ".$numberQuestions; 
             echo "</br><a href=''>Retry</a>";
-            session_destroy();
+            $_SESSION["score"] = 0;
+            $_SESSION["question"]= 0;
         } elseif (!isset($_REQUEST['submit'])) {
             $query= $con->prepare("select q_text from question where q_number=".($_SESSION['question']+1));
             $query->execute();
